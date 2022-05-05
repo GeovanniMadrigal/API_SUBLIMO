@@ -13,7 +13,7 @@ app.use(express.json());
 
 //rutes
 app.get('/', (req,res) =>{
-    res.send("Chale");
+    res.send("API SubliMO");
 });
 
 app.get('/productos', (req,res) => {
@@ -29,6 +29,42 @@ app.get('/usuarios', (req,res) => {
         if (err)
             throw err;
         res.json(datos);
+    });
+});
+
+app.post('/productos',(req,res) => {
+    const productReceived = req.body;
+    if(!productReceived || Object.keys(productReceived[0]).length < 4){
+        return res.status(400).json({
+            ok: false,
+            message: 'Faltan Parametros'
+        });
+    }
+    connectionDB.query('INSERT INTO productos SET?', productReceived, function (err) {
+        if (err)
+            throw err;
+    });
+    res.status(200).json({
+        ok: true,
+        message: 'Datos guardados correctamente',
+    });
+});
+
+app.post('/usuarios',(req,res) => {
+    const productReceived = req.body;
+    if(!productReceived || Object.keys(productReceived[0]).length < 3){
+        return res.status(400).json({
+            ok: false,
+            message: 'Faltan Parametros'
+        });
+    }
+    connectionDB.query('INSERT INTO usuarios SET?', productReceived, function (err) {
+        if (err)
+            throw err;
+    });
+    res.status(200).json({
+        ok: true,
+        message: 'Datos guardados correctamente',
     });
 });
 
